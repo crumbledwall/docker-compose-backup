@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+    web:
+        image: nginx:latest
+        ports:
+            - "80:80"
+        network_mode: bridge
+        volumes:
+            - ./www/html:/var/www/html
+            - ./nginx:/etc/nginx/
+            - ./logs/nginx:/var/log/nginx
+            - ./run:/var/run
+    php:
+        build: .
+        image: php-fpm
+        network_mode: bridge
+        volumes:
+            - ./www/html:/var/www/html
+            - ./php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.comf
+            - ./php-fpm/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - ./php-fpm/php-fpm.d/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+            - ./php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./run:/var/run

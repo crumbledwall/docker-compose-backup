@@ -1,0 +1,20 @@
+version: '2'
+services:
+ nginx:
+   image: nginx:1
+   volumes:
+    - ./www:/usr/share/nginx/html
+    - ./default.conf:/etc/nginx/conf.d/default.conf
+   depends_on:
+    - php
+   ports:
+    - "80:80"
+ php:
+   build: ./php
+   volumes:
+    - ./www:/var/www/html
+    - ./phpsrc:/usr/src/php/
+   cap_add:
+    - SYS_PTRACE
+   security_opt: 
+    - seccomp:unconfined
